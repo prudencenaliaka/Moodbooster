@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mirshy's Mood Booster</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #222;
+            color: #fff;
+            padding: 20px;
+            transition: background-color 0.5s, color 0.5s;
+            overflow: hidden;
+            position: relative;
+        }
+        .light-mode {
+            background-color: #fffbf2;
+            color: #000;
+        }
+        .toggle-btn {
+    background: linear-gradient(135deg, #ff7eb3, #ff758c);
+    border: none;
+    color: white;
+    font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.toggle-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+        .mood-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+        .mood {
+            background-color: #ffcccb;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.3s, background-color 0.3s;
+        }
+        .mood:hover {
+            background-color: #ff9999;
+            transform: scale(1.1);
+        }
+        .content {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background: #fff;
+            color: #000;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+            transition: opacity 0.5s, max-height 0.5s ease-in-out;
+            opacity: 0;
+            max-width: 90%; /* Makes sure it fits small screens */
+            max-height: 500px; /* Prevents it from being too large */
+            overflow-y: auto; /* Enables scrolling inside the box */
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .show {
+            display: block;
+            opacity: 1;
+        }
+        /* Slideshow */
+        .slideshow-container {
+            position: relative;
+            max-width: 300px;
+            margin: 20px auto;
+        }
+        img {
+    object-fit: contain; /* Keeps the entire image visible */
+    width: 100%; 
+    height: auto;
+    max-height: 250px;
+}
+
+        .slide {
+            display: none;
+            width: 100%;
+            border-radius: 10px;
+        }
+        .fade {
+            animation: fadeEffect 1.5s infinite;
+        }
+        @keyframes fadeEffect {
+            from { opacity: 0.4; }
+            to { opacity: 1; }
+        }
+        /* Falling animations */
+        .falling-item {
+            position: absolute;
+            top: -50px;
+            animation: fall linear infinite;
+        }
+        @keyframes fall {
+            0% { transform: translateY(-50px) rotate(0deg); }
+            100% { transform: translateY(100vh) rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <button class="toggle-btn" onclick="toggleDarkMode()">Toggle Light/Dark Mode</button>
+
+    <!-- Slideshow -->
+    <div class="slideshow-container">
+        <img class="slide fade" src="mirshy1.jpeg" alt="Mirriam">
+        <img class="slide fade" src="mirshy2.jpeg" alt="Mirriam">
+        <img class="slide fade" src="mirshy3.jpeg" alt="Mirriam">
+    </div>
+
+    <h1>Hey beautiful Mirshy! How are you feeling today? 😊</h1>
+    
+    <div class="mood-container">
+        <div class="mood" onclick="showMood('sad')">😢 Sad</div>
+        <div class="mood" onclick="showMood('anxious')">😰 Anxious</div>
+        <div class="mood" onclick="showMood('unmotivated')">😞 Unmotivated</div>
+        <div class="mood" onclick="showMood('lonely')">🥺 Lonely</div>
+        <div class="mood" onclick="showMood('stressed')">🤯 Stressed</div>
+        <div class="mood" onclick="showMood('happy')">😊 Happy</div>
+        <div class="mood" onclick="showMood('excited')">🤩 Excited</div>
+        <div class="mood" onclick="showMood('bored')">😴 Bored</div>
+        <div class="mood" onclick="showMood('frustrated')">😤 Frustrated</div>
+        <div class="mood" onclick="showMood('grateful')">🙏 Grateful</div>
+    </div>
+
+    <div id="moodContent" class="content"></div>
+
+    <script>
+        function toggleDarkMode() {
+            document.body.classList.toggle('light-mode');
+        }
+
+        const moodData = {
+            sad: { song: "songs/sad.mp3", verse: "Psalm 34:18 - The Lord is close to the brokenhearted and saves those who are crushed in spirit.", meme: "memes/sad.gif" },
+    anxious: { song: "songs/anxious.mp3", verse: "1 Peter 5:7 - Cast all your anxiety on him because he cares for you.", meme: "memes/anxious.gif" },
+    unmotivated: { song: "songs/unmotivated.mp3", verse: "Jeremiah 29:11 - For I know the plans I have for you, declares the Lord, plans for welfare and not for evil, to give you a future and a hope.", meme: "memes/motivation.gif" },
+    lonely: { song: "songs/lonely.mp3", verse: "Hebrews 13:5b - Never will I leave you; never will I forsake you.", meme: "memes/lonely.gif" },
+    stressed: { song: "songs/stressed.mp3", verse: "Matthew 11:28 - Come to me, all who are weary.", meme: "memes/stressed.gif" },
+    happy: { song: "songs/happy.mp3", verse: "Psalm 118:24 - This is the day the Lord has made.", meme: "memes/meme5.gif" },
+    excited: { song: "songs/excited.mp3", verse: "Romans 12:12 - Be joyful in hope.", meme: "memes/meme6.gif" },
+    bored: { song: "songs/bored.mp3", verse: "Ecclesiastes 3:1 - There is a time for everything.", meme: "memes/meme7.gif" },
+    frustrated: { song: "songs/frustrated.mp3", verse: "John 16:33 - I have told you these things, so that in me you may have peace. In this world you will have trouble. But take heart! I have overcome the world.", meme: "memes/frustrated.gif" },
+    grateful: { song: "songs/grateful.mp3", verse: "1 Thessalonians 5:18 - Give thanks in all circumstances; for this is God’s will for you in Christ Jesus.", meme: "memes/grateful.gif" }
+        };
+
+
+        let currentAudio = null; // To store the currently playing song
+
+function showMood(mood) {
+    const contentDiv = document.getElementById('moodContent');
+    contentDiv.classList.remove('show');
+
+    // Stop previous audio if it exists
+    if (currentAudio) {
+        currentAudio.pause();
+        currentAudio.currentTime = 0; // Reset playback position
+    }
+
+    setTimeout(() => {
+        contentDiv.innerHTML = `
+            <div class="card">
+                <h2>${mood.charAt(0).toUpperCase() + mood.slice(1)} Mood</h2>
+                <p><strong>Here's something for you, Mirsh! 💖</strong></p>
+                <p><strong>"${moodData[mood].verse}"</strong></p>
+                <p>Here's something for the mood! 😊</p>
+                <img src="${moodData[mood].meme}" alt="Funny Meme" style="width:200px; height:auto;">
+                <audio id="moodAudio" src="${moodData[mood].song}" controls autoplay></audio>
+            </div>
+        `;
+
+        contentDiv.classList.add('show');
+
+        // Play the new audio
+        currentAudio = document.getElementById('moodAudio');
+        currentAudio.play();
+
+        //Automatically scroll to the content
+        setTimeout(() => {
+            contentDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 500);
+    }, 300);
+}
+
+
+
+        // Slideshow
+        let slideIndex = 0;
+        function showSlides() {
+            let slides = document.getElementsByClassName("slide");
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            slideIndex++;
+            if (slideIndex > slides.length) { slideIndex = 1; }
+            slides[slideIndex - 1].style.display = "block";
+            setTimeout(showSlides, 2000);
+        }
+        showSlides();
+
+        // Falling animations
+        function createFallingItem() {
+            const emojis = ['🎈', '🌸', '⭐'];
+            const item = document.createElement("div");
+            item.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+            item.classList.add("falling-item");
+            item.style.left = Math.random() * 100 + "vw";
+            item.style.animationDuration = Math.random() * 3 + 2 + "s";
+            item.style.fontSize = Math.random() * 20 + 20 + "px";
+            document.body.appendChild(item);
+            setTimeout(() => item.remove(), 5000);
+        }
+        setInterval(createFallingItem, 500);
+    </script>
+</body>
+</html>
